@@ -60,6 +60,7 @@
          */
         function onInit() {
             setStates();
+            hideState();
         }
 
         function setStates() {
@@ -70,6 +71,12 @@
             } else {
                 vm.states = $scope.states;
             }
+        }
+
+        function hideState() {
+            vm.states = vm.states.filter(state =>
+                state.url !== '/cce' && state.url !== '/orders' && state.url !== '/reports'
+            );
         }
     }
 })();
