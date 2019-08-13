@@ -1,16 +1,9 @@
-import hudson.tasks.test.AbstractTestResultAction
-
 pipeline {
     agent any
     options {
-        buildDiscarder(logRotator(
-            numToKeepStr: env.BRANCH_NAME.equals("master") ? '15' : '3',
-            daysToKeepStr: env.BRANCH_NAME.equals("master") || env.BRANCH_NAME.startsWith("rel-") ? '' : '7',
-            artifactDaysToKeepStr: env.BRANCH_NAME.equals("master") || env.BRANCH_NAME.startsWith("rel-") ? '' : '3',
-            artifactNumToKeepStr: env.BRANCH_NAME.equals("master") || env.BRANCH_NAME.startsWith("rel-") ? '' : '1'
-        ))
+        buildDiscarder(logRotator(numToKeepStr: '15'))
         disableConcurrentBuilds()
-        skipStagesAfterUnstable()
+        // skipStagesAfterUnstable()
     }
     environment {
       PATH = "/usr/local/bin/:$PATH"
@@ -52,24 +45,21 @@ pipeline {
                     script {
                         try {
                             sh '''
-                                sudo rm -f .env
+                                rm -f .env
                                 cp $ENV_FILE .env
                                 if [ "$GIT_BRANCH" != "master" ]; then
                                     sed -i '' -e "s#^TRANSIFEX_PUSH=.*#TRANSIFEX_PUSH=false#" .env  2>/dev/null || true
                                 fi
+                                export "UID=`id -u jenkins`"
                                 docker-compose pull
                                 docker-compose down --volumes
                                 docker-compose run --entrypoint /dev-ui/build.sh auth-ui
                                 docker-compose build image
                                 docker-compose down --volumes
                             '''
-                            currentBuild.result = processTestResults('SUCCESS')
                         }
                         catch (exc) {
-                            currentBuild.result = processTestResults('FAILURE')
-                            if (currentBuild.result == 'FAILURE') {
-                                error(exc.toString())
-                            }
+                            // currentBuild.result = 'UNSTABLE'
                         }
                     }
                 }
@@ -88,18 +78,21 @@ pipeline {
                         notifyAfterFailure()
                     }
                 }
+                always {
+                    junit '**/build/test/test-results/*.xml'
+                }
             }
         }
-        stage('Build reference-ui') {
+        stage('Build Image and notify reference-ui') {
             when {
                 expression {
-                    return "${env.GIT_BRANCH}" == 'master'
+                    return env.GIT_BRANCH == 'master'
                 }
             }
             steps {
-                sh "docker tag openlmis/auth-ui:latest openlmis/auth-ui:${VERSION}"
-                sh "docker push openlmis/auth-ui:${VERSION}"
-                build job: 'OpenLMIS-reference-ui-pipeline/master', wait: false
+                sh "docker tag openlmis/auth-ui:latest siglusdevops/auth-ui:${VERSION}"
+                sh "docker push siglusdevops/auth-ui:${VERSION}"
+                build job: 'openlmis-reference-ui/master', wait: false
             }
             post {
                 failure {
@@ -109,87 +102,14 @@ pipeline {
                 }
             }
         }
-        stage('Sonar analysis') {
-            steps {
-                withSonarQubeEnv('Sonar OpenLMIS') {
-                    withCredentials([string(credentialsId: 'SONAR_LOGIN', variable: 'SONAR_LOGIN'), string(credentialsId: 'SONAR_PASSWORD', variable: 'SONAR_PASSWORD')]) {
-                        script {
-                            sh '''
-                                set +x
 
-                                sudo rm -f .env
-                                touch .env
-
-                                SONAR_LOGIN_TEMP=$(echo $SONAR_LOGIN | cut -f2 -d=)
-                                SONAR_PASSWORD_TEMP=$(echo $SONAR_PASSWORD | cut -f2 -d=)
-                                echo "SONAR_LOGIN=$SONAR_LOGIN_TEMP" >> .env
-                                echo "SONAR_PASSWORD=$SONAR_PASSWORD_TEMP" >> .env
-                                echo "SONAR_BRANCH=$GIT_BRANCH" >> .env
-
-                                docker-compose run --entrypoint ./sonar.sh auth-ui
-                                docker-compose down --volumes
-                                sudo rm -rf node_modules/
-                            '''
-                            // workaround because sonar plugin retrieve the path directly from the output
-                            sh 'echo "Working dir: ${WORKSPACE}/.sonar"'
-                        }
-                    }
-                }
-                timeout(time: 1, unit: 'HOURS') {
-                    script {
-                        def gate = waitForQualityGate()
-                        if (gate.status != 'OK') {
-                            echo 'Quality Gate FAILED'
-                            currentBuild.result = 'UNSTABLE'
-                        }
-                    }
-                }
-            }
-            post {
-                unstable {
-                    script {
-                        notifyAfterFailure()
-                    }
-                }
-                failure {
-                    script {
-                        notifyAfterFailure()
-                    }
-                }
-            }
-        }
-        stage('Push image') {
-            when {
-                expression {
-                    return env.GIT_BRANCH == 'master' || env.GIT_BRANCH =~ /rel-.+/
-                }
-            }
-            steps {
-                sh "docker tag openlmis/auth-ui:latest openlmis/auth-ui:${VERSION}"
-                sh "docker push openlmis/auth-ui:${VERSION}"
-            }
-            post {
-                success {
-                    script {
-                        if (!VERSION.endsWith("SNAPSHOT")) {
-                            currentBuild.setKeepLog(true)
-                        }
-                    }
-                }
-                failure {
-                    script {
-                        notifyAfterFailure()
-                    }
-                }
-            }
-        }
     }
     post {
         fixed {
             script {
                 BRANCH = "${env.GIT_BRANCH}".trim()
                 if (BRANCH.equals("master") || BRANCH.startsWith("rel-")) {
-                    slackSend color: 'good', message: "${env.JOB_NAME} - #${env.BUILD_NUMBER} Back to normal"
+                    // slackSend color: 'good', message: "${env.JOB_NAME} - #${env.BUILD_NUMBER} Back to normal"
                 }
             }
         }
@@ -197,31 +117,11 @@ pipeline {
 }
 
 def notifyAfterFailure() {
-    messageColor = 'danger'
-    if (currentBuild.result == 'UNSTABLE') {
-        messageColor = 'warning'
-    }
-    BRANCH = "${env.GIT_BRANCH}".trim()
-    if (BRANCH.equals("master") || BRANCH.startsWith("rel-")) {
-        slackSend color: "${messageColor}", message: "${env.JOB_NAME} - #${env.BUILD_NUMBER} ${env.STAGE_NAME} ${currentBuild.result} (<${env.BUILD_URL}|Open>)"
-    }
-    emailext subject: "${env.JOB_NAME} - #${env.BUILD_NUMBER} ${env.STAGE_NAME} ${currentBuild.result}",
-        body: """<p>${env.JOB_NAME} - #${env.BUILD_NUMBER} ${env.STAGE_NAME} ${currentBuild.result}</p><p>Check console <a href="${env.BUILD_URL}">output</a> to view the results.</p>""",
-        recipientProviders: [[$class: 'CulpritsRecipientProvider'], [$class: 'DevelopersRecipientProvider']]
-}
-
-def processTestResults(status) {
-    junit '**/build/test/test-results/*.xml'
-
-    AbstractTestResultAction testResultAction = currentBuild.rawBuild.getAction(AbstractTestResultAction.class)
-    if (testResultAction != null) {
-        failuresCount = testResultAction.failCount
-        echo "Failed tests count: ${failuresCount}"
-        if (failuresCount > 0) {
-            echo "Setting build unstable due to test failures"
-            status = 'UNSTABLE'
-        }
-    }
-
-    return status
+    // BRANCH = "${env.GIT_BRANCH}".trim()
+    // if (BRANCH.equals("master") || BRANCH.startsWith("rel-")) {
+    //     slackSend color: 'danger', message: "${env.JOB_NAME} - #${env.BUILD_NUMBER} ${env.STAGE_NAME} ${currentBuild.result} (<${env.BUILD_URL}|Open>)"
+    // }
+    // emailext subject: "${env.JOB_NAME} - #${env.BUILD_NUMBER} ${env.STAGE_NAME} ${currentBuild.result}",
+    //     body: """<p>${env.JOB_NAME} - #${env.BUILD_NUMBER} ${env.STAGE_NAME} ${currentBuild.result}</p><p>Check console <a href="${env.BUILD_URL}">output</a> to view the results.</p>""",
+    //     recipientProviders: [[$class: 'CulpritsRecipientProvider'], [$class: 'DevelopersRecipientProvider']]
 }
