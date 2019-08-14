@@ -74,9 +74,9 @@
         }
 
         function hideState() {
-            vm.states = vm.states.filter(state =>
-                state.url !== '/cce' && state.url !== '/orders' && state.url !== '/reports'
-            );
+            vm.states = vm.states.filter(function(state) {
+                return state.url !== '/cce' && state.url !== '/orders' && state.url !== '/reports';
+            });
         }
     }
 })();
