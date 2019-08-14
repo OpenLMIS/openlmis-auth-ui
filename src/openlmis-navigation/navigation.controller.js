@@ -74,9 +74,11 @@
         }
 
         function hideState() {
-            vm.states = vm.states.filter(function(state) {
-                return state.url !== '/cce' && state.url !== '/orders' && state.url !== '/reports';
-            });
+            if (vm.states) {
+                vm.states = vm.states.filter(function(state) {
+                    return state.url !== '/cce' && state.url !== '/orders' && state.url !== '/reports';
+                });
+            }
         }
     }
 })();

@@ -65,19 +65,19 @@ describe('NavigationController', function() {
         it('should expose navigationStateService.isSubmenu method', function() {
             this.initController();
 
-            expect(this.vm.isSubmenu).toBe(this.navigationStateService.isSubmenu);
+            expect(this.vm.isSubmenu).toEqual(this.navigationStateService.isSubmenu);
         });
 
         it('should expose navigationStateService.shouldDisplay method', function() {
             this.initController();
 
-            expect(this.vm.shouldDisplay).toBe(this.navigationStateService.shouldDisplay);
+            expect(this.vm.shouldDisplay).toEqual(this.navigationStateService.shouldDisplay);
         });
 
         it('should get root children if no root state or state list was given', function() {
             this.initController();
 
-            expect(this.vm.states).toBe(this.mainRoot);
+            expect(this.vm.states).toEqual(this.mainRoot);
         });
 
         it('should get state children if root states was given', function() {
@@ -85,7 +85,7 @@ describe('NavigationController', function() {
 
             this.initController();
 
-            expect(this.vm.states).toBe(this.subRoot);
+            expect(this.vm.states).toEqual(this.subRoot);
         });
 
         it('should expose states if the state list was given', function() {
@@ -93,7 +93,7 @@ describe('NavigationController', function() {
 
             this.initController();
 
-            expect(this.vm.states).toBe(this.states);
+            expect(this.vm.states).toEqual(this.states);
         });
 
     });
@@ -110,7 +110,7 @@ describe('NavigationController', function() {
 
             var result = this.vm.hasChildren('state');
 
-            expect(result).toBe(true);
+            expect(result).toEqual(true);
         });
 
         it('should call navigationStateService.hasChildren', function() {
