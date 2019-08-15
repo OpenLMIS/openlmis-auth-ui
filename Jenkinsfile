@@ -3,7 +3,7 @@ pipeline {
     options {
         buildDiscarder(logRotator(numToKeepStr: '15'))
         disableConcurrentBuilds()
-        // skipStagesAfterUnstable()
+        skipStagesAfterUnstable()
     }
     environment {
       PATH = "/usr/local/bin/:$PATH"
@@ -68,7 +68,7 @@ pipeline {
                             '''
                         }
                         catch (exc) {
-                            // currentBuild.result = 'UNSTABLE'
+                            currentBuild.result = 'UNSTABLE'
                         }
                     }
                 }
