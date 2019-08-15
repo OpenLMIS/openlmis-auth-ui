@@ -8,6 +8,7 @@ pipeline {
     environment {
       PATH = "/usr/local/bin/:$PATH"
       COMPOSE_PROJECT_NAME = "${env.JOB_NAME}-${BRANCH_NAME}"
+      COMPOSE_HTTP_TIMEOUT = 120
     }
     stages {
         stage('Preparation') {
