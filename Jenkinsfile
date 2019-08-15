@@ -59,7 +59,7 @@ pipeline {
                                 PROJECT_NAME=${JOB_NAME%/*}
                                 PROJECT_SHORT_NAME=${PROJECT_NAME#*-}
                                 IMAGE_REPO=siglusdevops/${PROJECT_SHORT_NAME}
-
+                                VERSION=6.2.0
                                 docker tag ${IMAGE_REPO}:latest ${IMAGE_REPO}:${VERSION}
                                 docker push ${IMAGE_REPO}:${VERSION}
                                 docker push ${IMAGE_REPO}:latest
