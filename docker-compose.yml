@@ -20,4 +20,4 @@ services:
       - '/openlmis-ui-components'
   image:
     build: .
-    image: openlmis/auth-ui
+    image: siglusdevops/auth-ui

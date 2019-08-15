@@ -39,7 +39,7 @@ pipeline {
                 }
             }
         }
-        stage('Build') {
+        stage('Build and Push Image') {
             steps {
                 withCredentials([file(credentialsId: '8da5ba56-8ebb-4a6a-bdb5-43c9d0efb120', variable: 'ENV_FILE')]) {
                     script {
@@ -51,10 +51,19 @@ pipeline {
                                     sed -i '' -e "s#^TRANSIFEX_PUSH=.*#TRANSIFEX_PUSH=false#" .env  2>/dev/null || true
                                 fi
                                 export "UID=`id -u jenkins`"
-                                docker-compose pull
                                 docker-compose down --volumes
+                                docker-compose pull
                                 docker-compose run --entrypoint /dev-ui/build.sh auth-ui
                                 docker-compose build image
+
+                                PROJECT_NAME=${JOB_NAME%/*}
+                                PROJECT_SHORT_NAME=${PROJECT_NAME#*-}
+                                IMAGE_REPO=siglusdevops/${PROJECT_SHORT_NAME}
+
+                                docker tag ${IMAGE_REPO}:latest ${IMAGE_REPO}:${VERSION}
+                                docker push ${IMAGE_REPO}:${VERSION}
+                                docker push ${IMAGE_REPO}:latest
+                                docker rmi ${IMAGE_REPO}:${VERSION} ${IMAGE_REPO}:latest
                                 docker-compose down --volumes
                             '''
                         }
@@ -83,16 +92,14 @@ pipeline {
                 }
             }
         }
-        stage('Build Image and notify reference-ui') {
+        stage('Notify to build reference-ui') {
             when {
                 expression {
                     return env.GIT_BRANCH == 'master'
                 }
             }
             steps {
-                sh "docker tag openlmis/auth-ui:latest siglusdevops/auth-ui:${VERSION}"
-                sh "docker push siglusdevops/auth-ui:${VERSION}"
-                build job: 'openlmis-reference-ui/master', wait: false
+                build job: 'openlmis-reference-ui/master', wait: true
             }
             post {
                 failure {
