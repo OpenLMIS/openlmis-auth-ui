@@ -29,8 +29,9 @@ pipeline {
                         error("version property not found")
                     }
                     env.VERSION = properties.version
-                    env.PROJECT_NAME=${JOB_NAME%/*}
-                    env.PROJECT_SHORT_NAME=${PROJECT_NAME#*-}
+                    env.GIT_REVISION=sh(returnStdout: true, script: '''sh echo $(git rev-parse HEAD)''')
+                    env.PROJECT_NAME=sh(returnStdout: true, script: '''sh echo ${JOB_NAME%/*}''')
+                    env.PROJECT_SHORT_NAME=sh(returnStdout: true, script: '''sh echo ${PROJECT_NAME#*-}''')
                     currentBuild.displayName += " - " + VERSION
                 }
             }
