@@ -13,16 +13,6 @@ pipeline {
     stages {
         stage('Preparation') {
             steps {
-                checkout scm
-
-                withCredentials([usernamePassword(
-                  credentialsId: "cad2f741-7b1e-4ddd-b5ca-2959d40f62c2",
-                  usernameVariable: "USER",
-                  passwordVariable: "PASS"
-                )]) {
-                    sh 'set +x'
-                    sh 'docker login -u $USER -p $PASS'
-                }
                 script {
                     def properties = readProperties file: 'project.properties'
                     if (!properties.version) {
@@ -94,6 +84,14 @@ pipeline {
         }
         stage('Build and Push Image') {
             steps {
+                withCredentials([usernamePassword(
+                              credentialsId: "cad2f741-7b1e-4ddd-b5ca-2959d40f62c2",
+                              usernameVariable: "USER",
+                              passwordVariable: "PASS"
+                            )]) {
+                      sh 'set +x'
+                      sh 'docker login -u $USER -p $PASS'
+                }
                 script {
                         try {
                             sh '''
