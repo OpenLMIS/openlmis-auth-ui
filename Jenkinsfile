@@ -29,6 +29,8 @@ pipeline {
                         error("version property not found")
                     }
                     env.VERSION = properties.version
+                    env.PROJECT_NAME=${JOB_NAME%/*}
+                    env.PROJECT_SHORT_NAME=${PROJECT_NAME#*-}
                     currentBuild.displayName += " - " + VERSION
                 }
             }
@@ -54,16 +56,14 @@ pipeline {
                                 export "UID=`id -u jenkins`"
                                 docker-compose down --volumes
                                 docker-compose pull
-                                docker-compose run --entrypoint /dev-ui/build.sh auth-ui
+                                docker-compose run --entrypoint /dev-ui/build.sh ${PROJECT_SHORT_NAME}
                                 docker-compose build image
 
-                                PROJECT_NAME=${JOB_NAME%/*}
-                                PROJECT_SHORT_NAME=${PROJECT_NAME#*-}
                                 IMAGE_REPO=siglusdevops/${PROJECT_SHORT_NAME}
                                 docker tag ${IMAGE_REPO}:latest ${IMAGE_REPO}:${VERSION}
                                 docker push ${IMAGE_REPO}:${VERSION}
                                 docker push ${IMAGE_REPO}:latest
-                                docker rmi ${IMAGE_REPO}:${VERSION} ${IMAGE_REPO}:latest
+                                docker rmi ${IMAGE_REPO}:${VERSION}
                                 docker-compose down --volumes
                             '''
                         }
