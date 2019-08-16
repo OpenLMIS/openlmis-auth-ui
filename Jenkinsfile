@@ -26,6 +26,7 @@ pipeline {
                     DOCKER_ORG="siglusdevops"
                     env.IMAGE_REPO= DOCKER_ORG + "/" + env.PROJECT_SHORT_NAME
                     currentBuild.displayName += " - " + VERSION
+                    sh "printenv"
                 }
                 withCredentials([file(credentialsId: '8da5ba56-8ebb-4a6a-bdb5-43c9d0efb120', variable: 'ENV_FILE')]) {
                     script {
