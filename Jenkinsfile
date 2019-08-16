@@ -36,15 +36,13 @@ pipeline {
                 }
                 withCredentials([file(credentialsId: '8da5ba56-8ebb-4a6a-bdb5-43c9d0efb120', variable: 'ENV_FILE')]) {
                     script {
-                        try {
-                            sh '''
-                                rm -f .env
-                                cp $ENV_FILE .env
-                                if [ "$GIT_BRANCH" != "master" ]; then
-                                    sed -i '' -e "s#^TRANSIFEX_PUSH=.*#TRANSIFEX_PUSH=false#" .env  2>/dev/null || true
-                                fi
-                            '''
-                        }
+                        sh '''
+                            rm -f .env
+                            cp $ENV_FILE .env
+                            if [ "$GIT_BRANCH" != "master" ]; then
+                                sed -i '' -e "s#^TRANSIFEX_PUSH=.*#TRANSIFEX_PUSH=false#" .env  2>/dev/null || true
+                            fi
+                        '''
                     }
                 }
             }
@@ -65,14 +63,6 @@ pipeline {
                                 docker-compose down --volumes
                                 docker-compose pull
                                 docker-compose run --entrypoint /dev-ui/build.sh ${PROJECT_SHORT_NAME}
-
-                                IMAGE_REPO=siglusdevops/${PROJECT_SHORT_NAME}
-                                docker-compose build image
-                                docker tag ${IMAGE_REPO}:latest ${IMAGE_REPO}:${VERSION}
-                                docker push ${IMAGE_REPO}:${VERSION}
-                                docker push ${IMAGE_REPO}:latest
-                                docker rmi ${IMAGE_REPO}:${VERSION}
-                                docker-compose down --volumes
                             '''
                         }
                         catch (exc) {
