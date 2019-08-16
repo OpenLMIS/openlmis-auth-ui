@@ -34,17 +34,6 @@ pipeline {
                     env.PROJECT_SHORT_NAME=sh(returnStdout: true, script: '''echo ${PROJECT_NAME#*-}''').trim()
                     currentBuild.displayName += " - " + VERSION
                 }
-            }
-            post {
-                failure {
-                    script {
-                        notifyAfterFailure()
-                    }
-                }
-            }
-        }
-        stage('Build and Push Image') {
-            steps {
                 withCredentials([file(credentialsId: '8da5ba56-8ebb-4a6a-bdb5-43c9d0efb120', variable: 'ENV_FILE')]) {
                     script {
                         try {
@@ -54,13 +43,31 @@ pipeline {
                                 if [ "$GIT_BRANCH" != "master" ]; then
                                     sed -i '' -e "s#^TRANSIFEX_PUSH=.*#TRANSIFEX_PUSH=false#" .env  2>/dev/null || true
                                 fi
+                            '''
+                        }
+                    }
+                }
+            }
+            post {
+                failure {
+                    script {
+                        notifyAfterFailure()
+                    }
+                }
+            }
+        }
+        stage('Build and Test App') {
+            steps {
+                script {
+                        try {
+                            sh '''
                                 export "UID=`id -u jenkins`"
                                 docker-compose down --volumes
                                 docker-compose pull
                                 docker-compose run --entrypoint /dev-ui/build.sh ${PROJECT_SHORT_NAME}
-                                docker-compose build image
 
                                 IMAGE_REPO=siglusdevops/${PROJECT_SHORT_NAME}
+                                docker-compose build image
                                 docker tag ${IMAGE_REPO}:latest ${IMAGE_REPO}:${VERSION}
                                 docker push ${IMAGE_REPO}:${VERSION}
                                 docker push ${IMAGE_REPO}:latest
@@ -72,7 +79,6 @@ pipeline {
                             currentBuild.result = 'UNSTABLE'
                         }
                     }
-                }
             }
             post {
                 success {
@@ -93,6 +99,44 @@ pipeline {
                 }
             }
         }
+        stage('Build and Push Image') {
+            steps {
+                script {
+                        try {
+                            sh '''
+                                export "UID=`id -u jenkins`"
+                                IMAGE_REPO=siglusdevops/${PROJECT_SHORT_NAME}
+                                docker-compose build image
+                                docker tag ${IMAGE_REPO}:latest ${IMAGE_REPO}:${VERSION}
+                                docker push ${IMAGE_REPO}:${VERSION}
+                                docker push ${IMAGE_REPO}:latest
+                            '''
+                        }
+                        catch (exc) {
+                            currentBuild.result = 'UNSTABLE'
+                        }
+                    }
+            }
+            post {
+                unstable {
+                    script {
+                        notifyAfterFailure()
+                    }
+                }
+                failure {
+                    script {
+                        notifyAfterFailure()
+                    }
+                }
+                always {
+                    sh '''
+                        docker rmi ${IMAGE_REPO}:${VERSION}
+                        docker-compose down --volumes
+                    '''
+                }
+            }
+        }
+        
         stage('Notify to build reference-ui') {
             when {
                 expression {
