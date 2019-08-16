@@ -32,6 +32,9 @@ pipeline {
                     env.GIT_REVISION=sh(returnStdout: true, script: '''echo $(git rev-parse HEAD)''').trim()
                     env.PROJECT_NAME=sh(returnStdout: true, script: '''echo ${JOB_NAME%/*}''').trim()
                     env.PROJECT_SHORT_NAME=sh(returnStdout: true, script: '''echo ${PROJECT_NAME#*-}''').trim()
+
+                    DOCKER_ORG="siglusdevops"
+                    env.IMAGE_REPO= DOCKER_ORG + "/" + env.PROJECT_SHORT_NAME
                     currentBuild.displayName += " - " + VERSION
                 }
                 withCredentials([file(credentialsId: '8da5ba56-8ebb-4a6a-bdb5-43c9d0efb120', variable: 'ENV_FILE')]) {
@@ -95,7 +98,6 @@ pipeline {
                         try {
                             sh '''
                                 export "UID=`id -u jenkins`"
-                                IMAGE_REPO=siglusdevops/${PROJECT_SHORT_NAME}
                                 docker-compose build image
                                 docker tag ${IMAGE_REPO}:latest ${IMAGE_REPO}:${VERSION}
                                 docker push ${IMAGE_REPO}:${VERSION}
@@ -126,7 +128,7 @@ pipeline {
                 }
             }
         }
-        
+
         stage('Notify to build reference-ui') {
             when {
                 expression {
