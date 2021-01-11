@@ -1,7 +1,7 @@
 version: "2"
 services:
   auth-ui:
-    image: openlmis/dev-ui:9.0.2-TEST
+    image: openlmis/dev-ui:9.0.2-SNAPSHOT
     ports:
       - "9000:9000"
       - "9876:9876"
