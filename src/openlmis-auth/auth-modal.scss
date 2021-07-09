@@ -1,4 +1,6 @@
 .auth-modal {
+    $small: 480px;
+    $medium: 768px;
     background-color: $dark-gray;
 
     .modal-content {
@@ -7,7 +9,14 @@
 
     .modal-dialog {
         margin-top: 15%;
-        width: 700px;
+        @media screen and (min-width: $medium) {
+            width: 700px;
+        }
+        @media screen and (max-width: $medium) {
+            margin-right: 3%;
+            margin-left: 3%;
+        }
+        max-width: 700px;
     }
 
     .modal-header {
@@ -22,6 +31,11 @@
             margin-right: auto;
             word-break: normal !important;
         }
+
+        button {
+            margin: 0px 1em;
+            min-width: 92px;
+        }
     }
 
     .modal-body {
@@ -29,6 +43,9 @@
         background-size: 40% auto;
         background-position: 2em 45%;
         background-repeat: no-repeat;
+        @media screen and (max-width: $small) {
+            background-size: 30% auto;
+        }
         padding: 1em 1em 1em 50% !important;
 
         & > .form-desc,
@@ -38,6 +55,15 @@
 
         & > form > .alert {
             flex: initial;
+        }
+        .form-group .input-control{
+            width: 100%;
+        }
+
+        .button-group {
+            @media screen and (max-width: $small) {
+                display: grid;
+            }
         }
     }
 

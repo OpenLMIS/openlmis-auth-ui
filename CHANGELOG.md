@@ -1,3 +1,9 @@
+6.2.7 / 2021-07-09
+==================
+
+Improvements:
+* [OLMIS-7319](https://openlmis.atlassian.net/browse/OLMIS-7319): Improved the login screen to be responsive.
+
 6.2.6 / 2021-05-27
 ==================
 
