@@ -1,6 +1,4 @@
 .auth-modal {
-    $small: 480px;
-    $medium: 768px;
     background-color: $dark-gray;
 
     .modal-content {
@@ -9,10 +7,10 @@
 
     .modal-dialog {
         margin-top: 15%;
-        @media screen and (min-width: $medium) {
+        @media screen and (min-width: $res-md) {
             width: 700px;
         }
-        @media screen and (max-width: $medium) {
+        @media screen and (max-width: $res-md) {
             margin-right: 3%;
             margin-left: 3%;
         }
@@ -26,6 +24,7 @@
         border-radius: $border-radius $border-radius 0 0;
         display: flex;
         padding: 0.5em 1em !important;
+        overflow: hidden;
 
         & > h1 {
             margin-right: auto;
@@ -35,6 +34,10 @@
         button {
             margin: 0px 1em;
             min-width: 92px;
+            @media screen and (max-width: $res-xs) {
+                display: flex;
+                min-width: 12px;
+            }
         }
     }
 
@@ -43,9 +46,10 @@
         background-size: 40% auto;
         background-position: 2em 45%;
         background-repeat: no-repeat;
-        @media screen and (max-width: $small) {
+        @media screen and (max-width: $res-sm) {
             background-size: 30% auto;
         }
+
         padding: 1em 1em 1em 50% !important;
 
         & > .form-desc,
@@ -61,7 +65,7 @@
         }
 
         .button-group {
-            @media screen and (max-width: $small) {
+            @media screen and (max-width: $res-sm) {
                 display: grid;
             }
         }
