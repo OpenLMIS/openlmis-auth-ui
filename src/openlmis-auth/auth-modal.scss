@@ -60,13 +60,24 @@
         & > form > .alert {
             flex: initial;
         }
-        .form-group .input-control{
+        & > form > .input-control{
             width: 100%;
+        }
+        .form-group .input-control{
+            @media screen and (max-width: $res-sm) {
+                width: 100%;
+            }
         }
 
         .button-group {
             @media screen and (max-width: $res-sm) {
+                overflow: hidden;
                 display: grid;
+            }
+            @media screen and (max-width: $res-xs) {
+                position: relative;
+                right: 0px;
+                bottom: 0px;
             }
         }
     }
