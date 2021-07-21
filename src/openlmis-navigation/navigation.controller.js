@@ -28,16 +28,18 @@
         .module('openlmis-navigation')
         .controller('NavigationController', NavigationController);
 
-    NavigationController.$inject = ['$scope', 'navigationStateService'];
+    NavigationController.$inject = ['$window', '$scope', 'navigationStateService'];
 
-    function NavigationController($scope, navigationStateService) {
+    function NavigationController($window, $scope, navigationStateService) {
 
         var vm = this;
+        var w = angular.element($window);
 
         vm.$onInit = onInit;
         vm.hasChildren = navigationStateService.hasChildren;
         vm.isSubmenu = navigationStateService.isSubmenu;
         vm.isOffline = navigationStateService.isOffline;
+        vm.showInNavigationInLowResolutions = navigationStateService.showInNavigationInLowResolutions;
 
         /**
          * @ngdoc property
@@ -71,5 +73,19 @@
                 vm.states = $scope.states;
             }
         }
+
+        $scope.$watch(
+            function() {
+                return $window.innerWidth;
+            },
+            function(value) {
+                $scope.windowWidth = value;
+            },
+            true
+        );
+
+        w.bind('resize', function() {
+            $scope.$apply();
+        });
     }
 })();

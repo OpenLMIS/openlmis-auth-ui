@@ -74,6 +74,7 @@
         service.isOffline = isOffline;
         service.setUpStatesAvailability = setUpStatesAvailability;
         service.clearStatesAvailability = clearStatesAvailability;
+        service.showInNavigationInLowResolutions = showInNavigationInLowResolutions;
 
         loadStates();
 
@@ -127,6 +128,22 @@
          */
         function isOffline(state) {
             return state && state.isOffline;
+        }
+
+        /**
+         *
+         * @ngdoc method
+         * @methodOf openlmis-navigation.navigationStateService
+         * @name showInNavigationInLowResolutions
+         *
+         * @description
+         * Returns true if state is available while open app on mobile device.
+         *
+         * @param  {Object}  state A state object as returned by UI-Router
+         * @return {Boolean}       If the state can be viewed while using mobile devices
+         */
+        function showInNavigationInLowResolutions(state) {
+            return state && state.showInNavigationInLowResolutions;
         }
 
         /**

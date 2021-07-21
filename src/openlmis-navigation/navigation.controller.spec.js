@@ -74,6 +74,13 @@ describe('NavigationController', function() {
             expect(this.vm.shouldDisplay).toBe(this.navigationStateService.shouldDisplay);
         });
 
+        it('should expose navigationStateService.showInNavigationInLowResolutions method', function() {
+            this.initController();
+
+            expect(this.vm.showInNavigationInLowResolutions)
+                .toBe(this.navigationStateService.showInNavigationInLowResolutions);
+        });
+
         it('should get root children if no root state or state list was given', function() {
             this.initController();
 

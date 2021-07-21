@@ -40,35 +40,42 @@ describe('navigationStateService', function() {
                 .state('state1.subState65', {})
                 .state('state2', {
                     showInNavigation: true,
+                    showInNavigationInLowResolutions: true,
                     priority: 12,
                     abstract: true
                 })
                 .state('state2.subState0', {})
                 .state('state2.subState3', {
                     showInNavigation: true,
+                    showInNavigationInLowResolutions: true,
                     priority: 53,
                     accessRights: ['other-rights'],
                     isOffline: true
                 })
                 .state('state2.subState4', {
                     showInNavigation: true,
+                    showInNavigationInLowResolutions: false,
                     priority: 15,
                     accessRights: ['rights']
                 })
                 .state('state2.subState4.subSubState1', {
-                    showInNavigation: true
+                    showInNavigation: true,
+                    showInNavigationInLowResolutions: true
                 })
                 .state('state3', {})
                 .state('state3.subState1', {
                     showInNavigation: true,
+                    showInNavigationInLowResolutions: true,
                     priority: 11
                 })
                 .state('state3.subState16', {
                     showInNavigation: true,
+                    showInNavigationInLowResolutions: true,
                     priority: 10
                 })
                 .state('state4', {
                     showInNavigation: true,
+                    showInNavigationInLowResolutions: false,
                     priority: 11
                 })
                 .state('state5', {
@@ -79,34 +86,40 @@ describe('navigationStateService', function() {
                 })
                 .state('state6', {
                     showInNavigation: true,
+                    showInNavigationInLowResolutions: false,
                     canAccess: function($q) {
                         return $q.resolve(false);
                     }
                 })
                 .state('state7', {
                     showInNavigation: true,
+                    showInNavigationInLowResolutions: true,
                     canAccess: function($q) {
                         return $q.resolve(true);
                     }
                 })
                 .state('state8', {
                     showInNavigation: true,
+                    showInNavigationInLowResolutions: false,
                     canAccess: function() {
                         return true;
                     }
                 })
                 .state('state9', {
                     showInNavigation: true,
+                    showInNavigationInLowResolutions: true,
                     canAccess: function(mockService) {
                         return mockService.mockMethod();
                     }
                 })
                 .state('state91', {
                     showInNavigation: true,
+                    showInNavigationInLowResolutions: true,
                     abstract: true
                 })
                 .state('state91.subState17', {
                     showInNavigation: true,
+                    showInNavigationInLowResolutions: true,
                     canAccess: function($q) {
                         context.state91SubState17Deferred = $q.defer();
                         return context.state91SubState17Deferred.promise;
@@ -161,6 +174,17 @@ describe('navigationStateService', function() {
             expect(this.navigationStateService.roots[''][0].name).toBe('state2');
             expect(this.navigationStateService.roots[''][1].name).toBe('state4');
             expect(this.navigationStateService.roots[''][2].name).toBe('state1');
+        });
+
+        it('should set showInNavigationInLowResolutions values inside states', function() {
+            expect(this.navigationStateService.roots[''][0].showInNavigationInLowResolutions).toBe(true);
+            expect(this.navigationStateService.roots[''][1].showInNavigationInLowResolutions).toBe(false);
+            expect(this.navigationStateService.roots[''][2].showInNavigationInLowResolutions).toBeUndefined();
+        });
+
+        it('should set showInNavigationInLowResolutions values in children', function() {
+            expect(this.navigationStateService.roots[''][0].children[0].showInNavigationInLowResolutions).toBe(true);
+            expect(this.navigationStateService.roots[''][0].children[1].showInNavigationInLowResolutions).toBe(false);
         });
     });
 
