@@ -27,18 +27,36 @@ describe('NavigationController', function() {
         this.$scope = this.$rootScope.$new();
 
         this.mainRoot = [
-            'subState1',
-            'subState2'
+            {
+                name: 'subState1',
+                $shouldDisplayOnMobile: undefined
+            },
+            {
+                name: 'subState2',
+                $shouldDisplayOnMobile: undefined
+            }
         ];
 
         this.subRoot = [
-            'subSubState1',
-            'subSubState2'
+            {
+                name: 'subSubState1',
+                $shouldDisplayOnMobile: undefined
+            },
+            {
+                name: 'subSubState2',
+                $shouldDisplayOnMobile: undefined
+            }
         ];
 
         this.states = [
-            'state1',
-            'state2'
+            {
+                name: 'state1',
+                $shouldDisplayOnMobile: true
+            },
+            {
+                name: 'state2',
+                $shouldDisplayOnMobile: undefined
+            }
         ];
 
         this.navigationStateService.roots = {};
@@ -49,6 +67,7 @@ describe('NavigationController', function() {
             this.vm = this.$controller('NavigationController', {
                 $scope: this.$scope
             });
+            this.vm.states = this.states;
             this.vm.$onInit();
         };
     });
@@ -72,13 +91,6 @@ describe('NavigationController', function() {
             this.initController();
 
             expect(this.vm.shouldDisplay).toBe(this.navigationStateService.shouldDisplay);
-        });
-
-        it('should expose navigationStateService.showInNavigationInLowResolutions method', function() {
-            this.initController();
-
-            expect(this.vm.showInNavigationInLowResolutions)
-                .toBe(this.navigationStateService.showInNavigationInLowResolutions);
         });
 
         it('should get root children if no root state or state list was given', function() {
@@ -108,7 +120,7 @@ describe('NavigationController', function() {
     describe('hasChildren', function() {
 
         beforeEach(function() {
-
+            this.$scope.states = this.states;
             this.initController();
         });
 

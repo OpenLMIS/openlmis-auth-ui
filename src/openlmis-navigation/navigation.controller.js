@@ -28,12 +28,11 @@
         .module('openlmis-navigation')
         .controller('NavigationController', NavigationController);
 
-    NavigationController.$inject = ['$window', '$scope', 'navigationStateService'];
+    NavigationController.$inject = ['$scope', 'navigationStateService'];
 
-    function NavigationController($window, $scope, navigationStateService) {
+    function NavigationController($scope, navigationStateService) {
 
         var vm = this;
-        var w = angular.element($window);
 
         vm.$onInit = onInit;
         vm.hasChildren = navigationStateService.hasChildren;
@@ -53,6 +52,17 @@
         vm.states = undefined;
 
         /**
+         * @ngdoc property
+         * @propertyOf openlmis-navigation.controller:NavigationController
+         * @name states
+         * @type {Array}
+         *
+         * @description
+         * Contains current window width.
+         */
+        vm.windowWidth = undefined;
+
+        /**
          * @ngdoc method
          * @methodOf openlmis-navigation.controller:NavigationController
          * @name onInit
@@ -62,6 +72,7 @@
          */
         function onInit() {
             setStates();
+            setStatesForMobile(vm);
         }
 
         function setStates() {
@@ -74,18 +85,14 @@
             }
         }
 
-        $scope.$watch(
-            function() {
-                return $window.innerWidth;
-            },
-            function(value) {
-                $scope.windowWidth = value;
-            },
-            true
-        );
+        function setStatesForMobile(vm) {
+            vm.states.forEach(function(state) {
+                state.$shouldDisplayOnMobile = (!isRunningStandalone() || state.showInNavigationInLowResolutions);
+            });
+        }
 
-        w.bind('resize', function() {
-            $scope.$apply();
-        });
+        function isRunningStandalone() {
+            return (window.matchMedia('(display-mode: standalone)').matches);
+        }
     }
 })();
