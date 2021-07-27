@@ -52,17 +52,6 @@
         vm.states = undefined;
 
         /**
-         * @ngdoc property
-         * @propertyOf openlmis-navigation.controller:NavigationController
-         * @name states
-         * @type {Array}
-         *
-         * @description
-         * Contains current window width.
-         */
-        vm.windowWidth = undefined;
-
-        /**
          * @ngdoc method
          * @methodOf openlmis-navigation.controller:NavigationController
          * @name onInit
