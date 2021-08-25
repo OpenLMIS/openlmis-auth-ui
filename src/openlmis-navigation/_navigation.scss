@@ -110,7 +110,7 @@ header > .navbar {
       &:hover,
       &:focus{
         text-decoration: none;
-        color: $link-hover-color;
+        color: $link-color-hover;
       }
       &[disabled],
       &[disabled]:hover,
