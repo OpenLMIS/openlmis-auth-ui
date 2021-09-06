@@ -34,7 +34,7 @@ describe('openlmis-navigation run', function() {
             this.$q = $injector.get('$q');
         });
 
-        this.postLogoutAction = this.loginServiceSpy.registerPostLogoutAction.calls[0].args[0];
+        this.postLogoutAction = this.loginServiceSpy.registerPostLogoutAction.calls.first().args[0];
     });
 
     describe('run block', function() {
@@ -48,7 +48,7 @@ describe('openlmis-navigation run', function() {
     describe('post logout action', function() {
 
         it('should clear current user cache', function() {
-            this.navigationStateServiceSpy.clearStatesAvailability.andReturn(this.$q.resolve());
+            this.navigationStateServiceSpy.clearStatesAvailability.and.returnValue(this.$q.resolve());
 
             var success;
             this.postLogoutAction()

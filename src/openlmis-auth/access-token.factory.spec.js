@@ -39,7 +39,7 @@ describe('this.accessTokenFactory', function() {
     });
 
     it('should add access_token if not already in URI', function() {
-        spyOn(this.authorizationService, 'getAccessToken').andReturn('123');
+        spyOn(this.authorizationService, 'getAccessToken').and.returnValue('123');
 
         var uri = 'http://example.com/requisitions?program=abc';
         var updatedUri = this.accessTokenFactory.addAccessToken(uri);
@@ -48,7 +48,7 @@ describe('this.accessTokenFactory', function() {
     });
 
     it('should not add access_token if already in URI', function() {
-        spyOn(this.authorizationService, 'getAccessToken').andReturn('321');
+        spyOn(this.authorizationService, 'getAccessToken').and.returnValue('321');
 
         var uri = 'http://example.com/requisitions?program=abc&access_token=123';
         var updatedUri = this.accessTokenFactory.addAccessToken(uri);
@@ -57,7 +57,7 @@ describe('this.accessTokenFactory', function() {
     });
 
     it('should update access_token when "access_token" key in query params', function() {
-        spyOn(this.authorizationService, 'getAccessToken').andReturn('321');
+        spyOn(this.authorizationService, 'getAccessToken').and.returnValue('321');
 
         var uri = 'http://example.com/requisitions?program=abc&access_token=123';
         var updatedUri = this.accessTokenFactory.updateAccessToken(uri);
@@ -66,7 +66,7 @@ describe('this.accessTokenFactory', function() {
     });
 
     it('should not update access_token when "access_token" key not in query params', function() {
-        spyOn(this.authorizationService, 'getAccessToken').andReturn('321');
+        spyOn(this.authorizationService, 'getAccessToken').and.returnValue('321');
 
         var uri = 'http://example.com/requisitions?program=abc';
         var updatedUri = this.accessTokenFactory.updateAccessToken(uri);
@@ -75,7 +75,7 @@ describe('this.accessTokenFactory', function() {
     });
 
     it('should create a token header', function() {
-        spyOn(this.authorizationService, 'getAccessToken').andReturn('321');
+        spyOn(this.authorizationService, 'getAccessToken').and.returnValue('321');
 
         var header = this.accessTokenFactory.authHeader();
 

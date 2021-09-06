@@ -125,7 +125,7 @@ describe('NavigationController', function() {
         });
 
         it('should return visible children', function() {
-            this.navigationStateService.hasChildren.andReturn(true);
+            this.navigationStateService.hasChildren.and.returnValue(true);
 
             var result = this.vm.hasChildren('state');
 

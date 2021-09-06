@@ -68,7 +68,7 @@ describe('Offline navigation interceptor', function() {
         spyOn(this.loadingModalService, 'close');
 
         var context = this;
-        spyOn(this.offlineService, 'isOffline').andCallFake(function() {
+        spyOn(this.offlineService, 'isOffline').and.callFake(function() {
             return context.isOffline;
         });
     });

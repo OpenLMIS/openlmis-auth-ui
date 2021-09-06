@@ -25,7 +25,7 @@ describe('LoginModalInterceptor', function() {
         });
 
         this.loginDeferred = this.$q.defer();
-        spyOn(this.loginModalService, 'open').andReturn(this.loginDeferred.promise);
+        spyOn(this.loginModalService, 'open').and.returnValue(this.loginDeferred.promise);
 
         this.$rootScope.$broadcast('event:auth-loginRequired');
     });

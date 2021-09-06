@@ -29,13 +29,13 @@ describe('openlmis-login.loginService', function() {
             this.offlineService = $injector.get('offlineService');
         });
 
-        spyOn(this.authorizationService, 'setAccessToken').andCallThrough();
-        spyOn(this.authorizationService, 'clearAccessToken').andCallThrough();
-        spyOn(this.authService, 'loginConfirmed').andCallThrough();
+        spyOn(this.authorizationService, 'setAccessToken').and.callThrough();
+        spyOn(this.authorizationService, 'clearAccessToken').and.callThrough();
+        spyOn(this.authService, 'loginConfirmed').and.callThrough();
 
         spyOn(this.authorizationService, 'setUser');
         spyOn(this.authorizationService, 'clearUser');
-        spyOn(this.offlineService, 'isOffline').andReturn(false);
+        spyOn(this.offlineService, 'isOffline').and.returnValue(false);
 
         this.apiOauthTokenUrl = this.authUrl('/api/oauth/token?grant_type=password');
 
@@ -91,7 +91,7 @@ describe('openlmis-login.loginService', function() {
 
         it('returns an error if offline', function() {
             this.mock400Response();
-            this.offlineService.isOffline.andReturn(true);
+            this.offlineService.isOffline.and.returnValue(true);
 
             var message;
             this.loginService.login('john', 'john-password')
@@ -149,7 +149,7 @@ describe('openlmis-login.loginService', function() {
 
             var postLoginActionDeferred = this.$q.defer();
             var postLoginAction = jasmine.createSpy('postLoginAction');
-            postLoginAction.andReturn(postLoginActionDeferred.promise);
+            postLoginAction.and.returnValue(postLoginActionDeferred.promise);
 
             this.loginService.registerPostLoginAction(postLoginAction);
 
@@ -179,7 +179,7 @@ describe('openlmis-login.loginService', function() {
 
             var postLoginActionDeferred = this.$q.defer();
             var postLoginAction = jasmine.createSpy('postLoginAction');
-            postLoginAction.andReturn(postLoginActionDeferred.promise);
+            postLoginAction.and.returnValue(postLoginActionDeferred.promise);
 
             this.loginService.registerPostLoginAction(postLoginAction);
 
@@ -236,7 +236,7 @@ describe('openlmis-login.loginService', function() {
         });
 
         it('should logout while offline', function() {
-            this.offlineService.isOffline.andReturn(true);
+            this.offlineService.isOffline.and.returnValue(true);
 
             var success = false;
             this.loginService.logout().then(function() {
@@ -266,7 +266,7 @@ describe('openlmis-login.loginService', function() {
         it('should wait for post logout actions', function() {
             var postLogoutActionDeferred = this.$q.defer();
             var postLogoutAction = jasmine.createSpy('postLogoutAction');
-            postLogoutAction.andReturn(postLogoutActionDeferred.promise);
+            postLogoutAction.and.returnValue(postLogoutActionDeferred.promise);
 
             this.loginService.registerPostLogoutAction(postLogoutAction);
 

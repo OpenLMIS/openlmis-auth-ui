@@ -111,7 +111,7 @@ describe('openlmis-auth.authorizationService', function() {
         it('should return false if right name is undefined', inject(function() {
             expect(function() {
                 this.authorizationService.hasRight(undefined);
-            }.bind(this)).toThrow(new Error('Right name is required'));
+            }.bind(this)).toThrow('Right name is required');
         }));
 
         it('should return true if supervision right name is found with program id and facility id', function() {

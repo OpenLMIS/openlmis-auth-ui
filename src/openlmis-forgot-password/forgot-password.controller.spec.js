@@ -31,10 +31,10 @@ describe('ForgotPasswordController', function() {
         this.forgotPasswordDeferred = this.$q.defer();
         this.email = 'some-valid@email.com';
 
-        spyOn(this.forgotPasswordFactory, 'sendResetEmail').andReturn(this.forgotPasswordDeferred.promise);
-        spyOn(this.loadingModalService, 'open').andReturn(true);
-        spyOn(this.loadingModalService, 'close').andReturn(true);
-        spyOn(this.alertService, 'success').andReturn(this.$q.when());
+        spyOn(this.forgotPasswordFactory, 'sendResetEmail').and.returnValue(this.forgotPasswordDeferred.promise);
+        spyOn(this.loadingModalService, 'open').and.returnValue(true);
+        spyOn(this.loadingModalService, 'close').and.returnValue(true);
+        spyOn(this.alertService, 'success').and.returnValue(this.$q.when());
 
         this.vm = this.$controller('ForgotPasswordController', {
             modalDeferred: this.modalDeferred
@@ -69,7 +69,7 @@ describe('ForgotPasswordController', function() {
         });
 
         it('should close modal if alert was dismissed', function() {
-            spyOn(this.modalDeferred, 'resolve').andCallThrough();
+            spyOn(this.modalDeferred, 'resolve').and.callThrough();
 
             this.vm.forgotPassword();
             this.forgotPasswordDeferred.resolve();

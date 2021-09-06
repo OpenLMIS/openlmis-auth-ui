@@ -53,7 +53,7 @@ describe('openlmis-navigation directive', function() {
         this.navigationStateService.setUpStatesAvailability();
         this.$rootScope.$apply();
 
-        spyOn(this.offlineService, 'isOffline').andReturn(true);
+        spyOn(this.offlineService, 'isOffline').and.returnValue(true);
 
         var markup = '<openlmis-navigation></openlmis-navigation>';
 
