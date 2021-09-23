@@ -132,14 +132,14 @@ describe('navigationStateService', function() {
             this.$q = $injector.get('$q');
         });
 
-        spyOn(this.authorizationService, 'hasRights').and.callFake(function(rights) {
+        spyOn(this.authorizationService, 'hasRights').andCallFake(function(rights) {
             if ('other-rights' === rights[0]) {
                 return false;
             }
             return true;
         });
 
-        this.dependencyMethod.and.returnValue(true);
+        this.dependencyMethod.andReturn(true);
 
         inject(function($injector) {
             this.navigationStateService = $injector.get('navigationStateService');
@@ -230,20 +230,20 @@ describe('navigationStateService', function() {
         });
 
         it('should not update states availability for subsequent call unless they are cleared', function() {
-            expect(this.dependencyMethod.calls.count()).toEqual(1);
+            expect(this.dependencyMethod.callCount).toEqual(1);
 
             this.navigationStateService.setUpStatesAvailability();
             this.state91SubState17Deferred.resolve(true);
             this.$rootScope.$apply();
 
-            expect(this.dependencyMethod.calls.count()).toEqual(1);
+            expect(this.dependencyMethod.callCount).toEqual(1);
 
             this.navigationStateService.clearStatesAvailability();
             this.state91SubState17Deferred.resolve(true);
             this.navigationStateService.setUpStatesAvailability();
             this.$rootScope.$apply();
 
-            expect(this.dependencyMethod.calls.count()).toEqual(2);
+            expect(this.dependencyMethod.callCount).toEqual(2);
         });
 
         it('should set parent availability after setting children visibility', function() {

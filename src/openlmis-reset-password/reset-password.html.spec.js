@@ -30,7 +30,7 @@ describe('reset-password.html template', function() {
 
         this.$scope = this.$rootScope.$new();
 
-        spyOn(this.$state, 'go').and.returnValue();
+        spyOn(this.$state, 'go').andReturn();
 
         this.vm = this.$controller('ResetPasswordController', {
             modalDeferred: this.$q.defer()

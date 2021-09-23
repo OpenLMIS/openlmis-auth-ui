@@ -30,10 +30,10 @@ describe('accessTokenInterceptor', function() {
             this.alertService = $injector.get('alertService');
         });
 
-        spyOn(this.accessTokenFactory, 'addAccessToken').and.callFake(function(url) {
+        spyOn(this.accessTokenFactory, 'addAccessToken').andCallFake(function(url) {
             return url + '&access_token=SoMeAcCeSsToKeN';
         });
-        spyOn(this.accessTokenFactory, 'authHeader').and.returnValue('Bearer SoMeAcCeSsToKeN');
+        spyOn(this.accessTokenFactory, 'authHeader').andReturn('Bearer SoMeAcCeSsToKeN');
 
         spyOn(this.openlmisUrlService, 'check');
         spyOn(this.authorizationService, 'isAuthenticated');
@@ -46,8 +46,8 @@ describe('accessTokenInterceptor', function() {
     describe('request', function() {
 
         beforeEach(function() {
-            this.openlmisUrlService.check.and.returnValue(true);
-            this.authorizationService.isAuthenticated.and.returnValue(true);
+            this.openlmisUrlService.check.andReturn(true);
+            this.authorizationService.isAuthenticated.andReturn(true);
 
             this.config = {
                 url: 'some.url',
@@ -76,7 +76,7 @@ describe('accessTokenInterceptor', function() {
         });
 
         it('should not add token if user is not authenticated', function() {
-            this.authorizationService.isAuthenticated.and.returnValue(false);
+            this.authorizationService.isAuthenticated.andReturn(false);
 
             var result = this.accessTokenInterceptor.request(this.config);
 
@@ -198,7 +198,7 @@ describe('accessTokenInterceptor', function() {
         });
 
         it('should reject response', function() {
-            spyOn(this.$q, 'reject').and.callThrough();
+            spyOn(this.$q, 'reject').andCallThrough();
 
             this.accessTokenInterceptor.responseError(response);
 

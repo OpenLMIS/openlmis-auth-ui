@@ -54,7 +54,7 @@ describe('LoginController', function() {
         });
 
         it('should not login and show error when server returns error', function() {
-            this.loginService.login.and.returnValue(this.$q.reject('error'));
+            this.loginService.login.andReturn(this.$q.reject('error'));
 
             this.vm.username = username;
             this.vm.password = invalidPassword;
@@ -67,7 +67,7 @@ describe('LoginController', function() {
         });
 
         it('should clear password on failed login attempt', function() {
-            this.loginService.login.and.returnValue(this.$q.reject());
+            this.loginService.login.andReturn(this.$q.reject());
 
             this.vm.username = username;
             this.vm.password = invalidPassword;
@@ -80,7 +80,7 @@ describe('LoginController', function() {
         });
 
         it('should not clear password on successful login attempt', function() {
-            this.loginService.login.and.returnValue(this.$q.resolve());
+            this.loginService.login.andReturn(this.$q.resolve());
 
             this.vm.username = username;
             this.vm.password = validPassword;
@@ -93,7 +93,7 @@ describe('LoginController', function() {
         });
 
         it('should open loading modal', function() {
-            this.loginService.login.and.returnValue(this.$q.resolve());
+            this.loginService.login.andReturn(this.$q.resolve());
 
             this.vm.doLogin();
             this.$rootScope.$apply();
@@ -102,7 +102,7 @@ describe('LoginController', function() {
         });
 
         it('should close loading modal after successful login', function() {
-            this.loginService.login.and.returnValue(this.$q.resolve());
+            this.loginService.login.andReturn(this.$q.resolve());
 
             this.vm.doLogin();
             this.$rootScope.$apply();
@@ -111,7 +111,7 @@ describe('LoginController', function() {
         });
 
         it('should close loading modal after failed login', function() {
-            this.loginService.login.and.returnValue(this.$q.reject());
+            this.loginService.login.andReturn(this.$q.reject());
 
             this.vm.doLogin();
             this.$rootScope.$apply();
@@ -125,7 +125,7 @@ describe('LoginController', function() {
                 resolved = true;
             });
 
-            this.loginService.login.and.returnValue(this.$q.reject());
+            this.loginService.login.andReturn(this.$q.reject());
             this.vm.username = username;
             this.vm.password = invalidPassword;
 
@@ -134,7 +134,7 @@ describe('LoginController', function() {
 
             expect(resolved).not.toBe(true);
 
-            this.loginService.login.and.returnValue(this.$q.resolve());
+            this.loginService.login.andReturn(this.$q.resolve());
             this.vm.password = validPassword;
 
             this.vm.doLogin();
@@ -149,7 +149,7 @@ describe('LoginController', function() {
                 success = true;
             });
 
-            this.loginService.login.and.returnValue(this.$q.resolve());
+            this.loginService.login.andReturn(this.$q.resolve());
             this.vm.username = username;
             this.vm.password = validPassword;
 
@@ -165,7 +165,7 @@ describe('LoginController', function() {
                 success = false;
             });
 
-            this.loginService.login.and.returnValue(this.$q.reject());
+            this.loginService.login.andReturn(this.$q.reject());
             this.vm.username = username;
             this.vm.password = invalidPassword;
 

@@ -33,7 +33,7 @@ describe('authStateRouter', function() {
         spyOn(this.loadingModalService, 'close');
         spyOn(this.authorizationService, 'hasRights');
         spyOn(this.authorizationService, 'isAuthenticated');
-        spyOn(this.loginModalService, 'open').and.callThrough();
+        spyOn(this.loginModalService, 'open').andCallThrough();
 
         this.createState = function(name, accessRights) {
             return {
@@ -44,7 +44,7 @@ describe('authStateRouter', function() {
     });
 
     it('will redirect user to login if auth token is not set and state is home', function() {
-        this.authorizationService.isAuthenticated.and.returnValue(false);
+        this.authorizationService.isAuthenticated.andReturn(false);
 
         this.$rootScope.$broadcast('$stateChangeStart', this.createState('openlmis.home'));
 
@@ -52,7 +52,7 @@ describe('authStateRouter', function() {
     });
 
     it('will open login modal if auth token is not set and state is not home', function() {
-        this.authorizationService.isAuthenticated.and.returnValue(false);
+        this.authorizationService.isAuthenticated.andReturn(false);
 
         this.$rootScope.$broadcast('$stateChangeStart', this.createState('somewhere'), {}, this.createState(''));
 
@@ -60,7 +60,7 @@ describe('authStateRouter', function() {
     });
 
     it('should close loading dialog if auth token is not set and state is not home', function() {
-        this.authorizationService.isAuthenticated.and.returnValue(false);
+        this.authorizationService.isAuthenticated.andReturn(false);
 
         this.$rootScope.$broadcast('$stateChangeStart', this.createState('somewhere'), {}, this.createState(''));
 
@@ -68,7 +68,7 @@ describe('authStateRouter', function() {
     });
 
     it('will not redirect user if accessing pages in "auth.*" routes, and user is NOT authenticated', function() {
-        this.authorizationService.isAuthenticated.and.returnValue(false);
+        this.authorizationService.isAuthenticated.andReturn(false);
 
         this.$rootScope.$broadcast('$stateChangeStart', this.createState('auth.login'));
 
@@ -77,8 +77,8 @@ describe('authStateRouter', function() {
     });
 
     it('will not redirect user if auth token is set, unless page is login.html', function() {
-        this.authorizationService.isAuthenticated.and.returnValue(true);
-        this.authorizationService.hasRights.and.returnValue(true);
+        this.authorizationService.isAuthenticated.andReturn(true);
+        this.authorizationService.hasRights.andReturn(true);
 
         this.$rootScope.$broadcast('$stateChangeStart', this.createState('somewhere'));
 
@@ -93,8 +93,8 @@ describe('authStateRouter', function() {
     });
 
     it('should call alert if has no permission to enter state', function() {
-        this.authorizationService.isAuthenticated.and.returnValue(true);
-        this.authorizationService.hasRights.and.returnValue(false);
+        this.authorizationService.isAuthenticated.andReturn(true);
+        this.authorizationService.hasRights.andReturn(false);
 
         this.$rootScope.$broadcast('$stateChangeStart', this.createState('somewhere', []));
 
@@ -102,8 +102,8 @@ describe('authStateRouter', function() {
     });
 
     it('should close loading modal if user has no permission to enter state', function() {
-        this.authorizationService.isAuthenticated.and.returnValue(true);
-        this.authorizationService.hasRights.and.returnValue(false);
+        this.authorizationService.isAuthenticated.andReturn(true);
+        this.authorizationService.hasRights.andReturn(false);
 
         this.$rootScope.$broadcast('$stateChangeStart', this.createState('somewhere', []));
 

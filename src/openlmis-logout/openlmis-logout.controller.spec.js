@@ -42,8 +42,8 @@ describe('LogoutController', function() {
         });
 
         it('should be able to log out when online', function() {
-            this.offlineService.isOffline.and.returnValue(false);
-            this.loginService.logout.and.returnValue(this.$q.resolve());
+            this.offlineService.isOffline.andReturn(false);
+            this.loginService.logout.andReturn(this.$q.resolve());
 
             this.vm.logout();
             this.$rootScope.$apply();
@@ -56,8 +56,8 @@ describe('LogoutController', function() {
         });
 
         it('should fail to log out online if login service rejects', function() {
-            this.offlineService.isOffline.and.returnValue(false);
-            this.loginService.logout.and.returnValue(this.$q.reject());
+            this.offlineService.isOffline.andReturn(false);
+            this.loginService.logout.andReturn(this.$q.reject());
 
             this.vm.logout();
             this.$rootScope.$apply();
@@ -70,9 +70,9 @@ describe('LogoutController', function() {
         });
 
         it('should be able to log out when offline', function() {
-            this.offlineService.isOffline.and.returnValue(true);
-            this.confirmService.confirm.and.returnValue(this.$q.resolve());
-            this.loginService.logout.and.returnValue(this.$q.resolve());
+            this.offlineService.isOffline.andReturn(true);
+            this.confirmService.confirm.andReturn(this.$q.resolve());
+            this.loginService.logout.andReturn(this.$q.resolve());
 
             this.vm.logout();
             this.$rootScope.$apply();
@@ -89,9 +89,9 @@ describe('LogoutController', function() {
         });
 
         it('should fail to log out offline if login service rejects', function() {
-            this.offlineService.isOffline.and.returnValue(true);
-            this.confirmService.confirm.and.returnValue(this.$q.resolve());
-            this.loginService.logout.and.returnValue(this.$q.reject());
+            this.offlineService.isOffline.andReturn(true);
+            this.confirmService.confirm.andReturn(this.$q.resolve());
+            this.loginService.logout.andReturn(this.$q.reject());
 
             this.vm.logout();
             this.$rootScope.$apply();
@@ -108,8 +108,8 @@ describe('LogoutController', function() {
         });
 
         it('should fail to log out offline without confirmation', function() {
-            this.offlineService.isOffline.and.returnValue(true);
-            this.confirmService.confirm.and.returnValue(this.$q.reject());
+            this.offlineService.isOffline.andReturn(true);
+            this.confirmService.confirm.andReturn(this.$q.reject());
 
             this.vm.logout();
             this.$rootScope.$apply();

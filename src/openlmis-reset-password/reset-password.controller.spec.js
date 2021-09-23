@@ -47,7 +47,7 @@ describe('ResetPasswordController', function() {
             this.vm.password = password;
             this.vm.reenteredPassword = password;
 
-            this.changePasswordFactory.changePassword.and.returnValue(this.$q.when(true));
+            this.changePasswordFactory.changePassword.andReturn(this.$q.when(true));
 
             this.vm.changePassword();
             this.$rootScope.$apply();
@@ -62,7 +62,7 @@ describe('ResetPasswordController', function() {
             this.vm.password = password;
             this.vm.reenteredPassword = password;
 
-            this.changePasswordFactory.changePassword.and.returnValue(this.$q.reject());
+            this.changePasswordFactory.changePassword.andReturn(this.$q.reject());
 
             this.vm.changePassword();
             this.$rootScope.$apply();
