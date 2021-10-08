@@ -1,7 +1,7 @@
 <ul>
-    <li ng-repeat="state in vm.states" ng-class="{'dropdown':vm.hasChildren(state), 'dropdown-submenu':vm.isSubmenu(state)}" ng-if="state.$shouldDisplay && state.$shouldDisplayOnMobile">
-        <a ng-if="vm.hasChildren(state)" bs-dropdown="dropdown">{{state.label | message}}</a>
-        <a ng-if="!vm.hasChildren(state)" offline ng-class="{'is-offline':(!vm.isOffline(state) && isOffline)}" ng-disabled="(!vm.isOffline(state) && isOffline)" ui-sref="{{state.name}}" >{{state.label | message}}</a>
+    <li class="nav-item"  ng-repeat="state in vm.states" ng-class="{'dropdown':vm.hasChildren(state), 'dropdown-submenu':vm.isSubmenu(state)}" ng-if="state.$shouldDisplay && state.$shouldDisplayOnMobile">
+        <a class="nav-link" ng-if="vm.hasChildren(state)" bs-dropdown="dropdown">{{state.label | message}}</a>
+        <a class="nav-link" data-toggle="collapse" data-target="#navbarToggler" ng-if="!vm.hasChildren(state)" offline ng-class="{'is-offline':(!vm.isOffline(state) && isOffline)}" ng-disabled="(!vm.isOffline(state) && isOffline)" ui-sref="{{state.name}}" >{{state.label | message}}</a>
         <openlmis-navigation ng-if="vm.hasChildren(state)" class="dropdown-menu" states="state.children"></openlmis-navigation>
     </li>
 </ul>
