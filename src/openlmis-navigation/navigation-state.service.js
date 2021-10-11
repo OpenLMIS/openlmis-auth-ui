@@ -74,7 +74,6 @@
         service.isOffline = isOffline;
         service.setUpStatesAvailability = setUpStatesAvailability;
         service.clearStatesAvailability = clearStatesAvailability;
-        service.showInNavigationInLowResolutions = showInNavigationInLowResolutions;
 
         loadStates();
 
@@ -131,22 +130,6 @@
         }
 
         /**
-         *
-         * @ngdoc method
-         * @methodOf openlmis-navigation.navigationStateService
-         * @name showInNavigationInLowResolutions
-         *
-         * @description
-         * Returns true if state is available while open app on mobile device.
-         *
-         * @param  {Object}  state A state object as returned by UI-Router
-         * @return {Boolean}       If the state can be viewed while using mobile devices
-         */
-        function showInNavigationInLowResolutions(state) {
-            return state && state.showInNavigationInLowResolutions;
-        }
-
-        /**
          * @ngdoc method
          * @methodOf openlmis-navigation.navigationStateService
          * @name setUpStatesAvailability
@@ -154,7 +137,7 @@
          * @description
          * Sets up states availability based on the access rights and custom, per-state methods. This method will not
          * update states availability on subsequent calls until clearStatesAvailability methods is called.
-         * 
+         *
          * @return {Promise}  the promise resolved once the availability of all states is set
          */
         function setUpStatesAvailability() {
@@ -193,7 +176,7 @@
             service.roots = {};
 
             $state.get().forEach(function(state) {
-                if (state.showInNavigation) {
+                if (shouldShowInNavigation(state)) {
                     var parentName = getParentStateName(state);
 
                     var filtered = $filter('filter')($state.get(), {
@@ -201,7 +184,7 @@
                     }, true);
 
                     var parent = filtered[0];
-                    if (parent.showInNavigation) {
+                    if (shouldShowInNavigation(parent)) {
                         addChildState(parent, state);
                     } else {
                         addToRoots(service.roots, parentName, state);
@@ -275,7 +258,7 @@
         function setShouldDisplay(state) {
             return canViewState(state)
                 .then(function(canViewState) {
-                    state.$shouldDisplay = state.showInNavigation
+                    state.$shouldDisplay = shouldShowInNavigation(state)
                         && canViewState
                         && (!state.abstract || hasChildren(state));
                 });
@@ -295,5 +278,16 @@
             return $q.resolve(canViewState);
         }
 
+        function shouldShowInNavigation(state) {
+            if (isRunningStandalone()) {
+                return state.showInNavigationOnLowResolutions;
+            }
+
+            return state.showInNavigation;
+        }
+
+        function isRunningStandalone() {
+            return (window.matchMedia('(display-mode: standalone)').matches);
+        }
     }
 })();

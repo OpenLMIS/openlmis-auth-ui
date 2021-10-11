@@ -40,42 +40,42 @@ describe('navigationStateService', function() {
                 .state('state1.subState65', {})
                 .state('state2', {
                     showInNavigation: true,
-                    showInNavigationInLowResolutions: true,
+                    showInNavigationOnLowResolutions: true,
                     priority: 12,
                     abstract: true
                 })
                 .state('state2.subState0', {})
                 .state('state2.subState3', {
                     showInNavigation: true,
-                    showInNavigationInLowResolutions: true,
+                    showInNavigationOnLowResolutions: true,
                     priority: 53,
                     accessRights: ['other-rights'],
                     isOffline: true
                 })
                 .state('state2.subState4', {
                     showInNavigation: true,
-                    showInNavigationInLowResolutions: false,
+                    showInNavigationOnLowResolutions: false,
                     priority: 15,
                     accessRights: ['rights']
                 })
                 .state('state2.subState4.subSubState1', {
                     showInNavigation: true,
-                    showInNavigationInLowResolutions: true
+                    showInNavigationOnLowResolutions: true
                 })
                 .state('state3', {})
                 .state('state3.subState1', {
                     showInNavigation: true,
-                    showInNavigationInLowResolutions: true,
+                    showInNavigationOnLowResolutions: true,
                     priority: 11
                 })
                 .state('state3.subState16', {
                     showInNavigation: true,
-                    showInNavigationInLowResolutions: true,
+                    showInNavigationOnLowResolutions: true,
                     priority: 10
                 })
                 .state('state4', {
                     showInNavigation: true,
-                    showInNavigationInLowResolutions: false,
+                    showInNavigationOnLowResolutions: false,
                     priority: 11
                 })
                 .state('state5', {
@@ -86,40 +86,40 @@ describe('navigationStateService', function() {
                 })
                 .state('state6', {
                     showInNavigation: true,
-                    showInNavigationInLowResolutions: false,
+                    showInNavigationOnLowResolutions: false,
                     canAccess: function($q) {
                         return $q.resolve(false);
                     }
                 })
                 .state('state7', {
                     showInNavigation: true,
-                    showInNavigationInLowResolutions: true,
+                    showInNavigationOnLowResolutions: true,
                     canAccess: function($q) {
                         return $q.resolve(true);
                     }
                 })
                 .state('state8', {
                     showInNavigation: true,
-                    showInNavigationInLowResolutions: false,
+                    showInNavigationOnLowResolutions: false,
                     canAccess: function() {
                         return true;
                     }
                 })
                 .state('state9', {
                     showInNavigation: true,
-                    showInNavigationInLowResolutions: true,
+                    showInNavigationOnLowResolutions: true,
                     canAccess: function(mockService) {
                         return mockService.mockMethod();
                     }
                 })
                 .state('state91', {
                     showInNavigation: true,
-                    showInNavigationInLowResolutions: true,
+                    showInNavigationOnLowResolutions: true,
                     abstract: true
                 })
                 .state('state91.subState17', {
                     showInNavigation: true,
-                    showInNavigationInLowResolutions: true,
+                    showInNavigationOnLowResolutions: true,
                     canAccess: function($q) {
                         context.state91SubState17Deferred = $q.defer();
                         return context.state91SubState17Deferred.promise;
@@ -176,15 +176,15 @@ describe('navigationStateService', function() {
             expect(this.navigationStateService.roots[''][2].name).toBe('state1');
         });
 
-        it('should set showInNavigationInLowResolutions values inside states', function() {
-            expect(this.navigationStateService.roots[''][0].showInNavigationInLowResolutions).toBe(true);
-            expect(this.navigationStateService.roots[''][1].showInNavigationInLowResolutions).toBe(false);
-            expect(this.navigationStateService.roots[''][2].showInNavigationInLowResolutions).toBeUndefined();
+        it('should set showInNavigationOnLowResolutions values inside states', function() {
+            expect(this.navigationStateService.roots[''][0].showInNavigationOnLowResolutions).toBe(true);
+            expect(this.navigationStateService.roots[''][1].showInNavigationOnLowResolutions).toBe(false);
+            expect(this.navigationStateService.roots[''][2].showInNavigationOnLowResolutions).toBeUndefined();
         });
 
-        it('should set showInNavigationInLowResolutions values in children', function() {
-            expect(this.navigationStateService.roots[''][0].children[0].showInNavigationInLowResolutions).toBe(true);
-            expect(this.navigationStateService.roots[''][0].children[1].showInNavigationInLowResolutions).toBe(false);
+        it('should set showInNavigationOnLowResolutions values in children', function() {
+            expect(this.navigationStateService.roots[''][0].children[0].showInNavigationOnLowResolutions).toBe(true);
+            expect(this.navigationStateService.roots[''][0].children[1].showInNavigationOnLowResolutions).toBe(false);
         });
     });
 

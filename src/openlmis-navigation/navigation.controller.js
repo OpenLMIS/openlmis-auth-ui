@@ -38,7 +38,6 @@
         vm.hasChildren = navigationStateService.hasChildren;
         vm.isSubmenu = navigationStateService.isSubmenu;
         vm.isOffline = navigationStateService.isOffline;
-        vm.showInNavigationInLowResolutions = navigationStateService.showInNavigationInLowResolutions;
 
         /**
          * @ngdoc property
@@ -61,7 +60,6 @@
          */
         function onInit() {
             setStates();
-            setStatesForMobile(vm);
         }
 
         function setStates() {
@@ -72,16 +70,6 @@
             } else {
                 vm.states = $scope.states;
             }
-        }
-
-        function setStatesForMobile(vm) {
-            vm.states.forEach(function(state) {
-                state.$shouldDisplayOnMobile = (!isRunningStandalone() || state.showInNavigationInLowResolutions);
-            });
-        }
-
-        function isRunningStandalone() {
-            return (window.matchMedia('(display-mode: standalone)').matches);
         }
     }
 })();
