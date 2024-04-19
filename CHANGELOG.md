@@ -1,3 +1,8 @@
+6.2.12 / 2024-04-19
+==================
+Improvements:
+* Update ui-components version to 7.2.11.
+
 6.2.10 / 2023-06-26
 ==================
 * [OLMIS-7772](https://openlmis.atlassian.net/browse/OLMIS-7772): Fix issues with new Chrome popover functionality
