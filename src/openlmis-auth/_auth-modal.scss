@@ -27,7 +27,7 @@
         overflow: hidden;
 
         & > h1 {
-            margin-right: auto;
+            @include margin-right(auto);
             word-break: normal !important;
         }
 
@@ -50,7 +50,7 @@
             background-size: 30% auto;
         }
 
-        padding: 1em 1em 1em 50% !important;
+        @include padding(1em, 1em, 1em, 50%);
 
         & > .form-desc,
         & > form > fieldset {
@@ -76,7 +76,7 @@
             }
             @media screen and (max-width: $res-xs) {
                 position: relative;
-                right: 0px;
+                @include right(0px);
                 bottom: 0px;
             }
         }
@@ -84,7 +84,7 @@
 
     .modal-footer {
         border-top: none;
-        text-align: right;
+        @include text-align(right);
         padding: 0 !important;
         margin: 0;
         display: flex;

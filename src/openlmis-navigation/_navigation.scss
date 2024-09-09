@@ -95,8 +95,8 @@ header > .navbar {
   }
   .navbar-right{
     margin-top: 10px;
-    margin-right: 0em;
-    margin-left: 1em;
+    @include margin-left(1em);
+    @include margin-right(0em);
   }
 
   /* TOP LEVEL ITEMS */
@@ -152,7 +152,7 @@ header > .navbar {
           content: "";
           position:absolute;
           top: -0.4em;
-          left: 2.2em;
+          @include left(2.2em);
           width: 0em;
           height: 0em;
           border-left: 0.4em solid transparent;
@@ -167,7 +167,7 @@ header > .navbar {
 
   .dropdown-menu {
     top: 90%;
-    @include left(auto);
+    @include text-align(left);
     background-image: linear-gradient(to bottom, $background-color 10%, $background-color-alt 100%);
     li > a:hover{
       background-color: transparent;
@@ -181,22 +181,21 @@ header > .navbar {
 
     > .dropdown-menu {
       top:0;
-      left:100%;
+      @include left(100%);
       margin-top:-6px;
     }
 
     > a:after {
       display:block;
       content:" ";
-      float:right;
+      @include float(right);
       width:0;
       height:0;
-      border-color:transparent;
-      border-style:solid;
-      border-width:5px 0 5px 5px;
-      border-left-color:#cccccc;
+      border: transparent solid 5px;
+      @include border-right(transparent solid 0px);
+      @include border-left(#cccccc solid 5px);
       margin-top:5px;
-      margin-right:-10px;
+      @include margin-right(-10px);
     }
   }
   .dropdown-submenu:hover {
@@ -212,8 +211,12 @@ header > .navbar {
     float:none;
 
     >.dropdown-menu {
-      left:-100%;
-      margin-left:10px;
+      @include left(-100%);
+      @include margin-left(10px);
     }
   }
+}
+
+.dropdown-menu {
+  @include text-align(left);
 }
