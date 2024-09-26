@@ -58,6 +58,11 @@
         function doLogout() {
             loginService.logout()
                 .then(function() {
+                    var currentLocale = localStorage.getItem('openlmis.current_locale');
+                    localStorage.clear();
+                    localStorage.setItem('openlmis.current_locale', currentLocale);
+                })
+                .then(function() {
                     $rootScope.$emit('openlmis-auth.logout');
                     $state.go('auth.login');
                 });
