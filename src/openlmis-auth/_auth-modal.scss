@@ -43,9 +43,18 @@
 
     .modal-body {
         background-image: url("../assets/common/openlmis-logo-stacked.svg");
+        background-size: 40% auto;
         background-repeat: no-repeat;
         @media screen and (max-width: $res-sm) {
             background-size: 30% auto;
+        }
+
+        [dir='rtl'] & {
+            background-position: calc(100% - 2em) 45%;
+        }
+    
+        [dir='ltr'] & {
+            background-position: 2em 45%;
         }
 
         @include padding(1em, 1em, 1em, 50%);
