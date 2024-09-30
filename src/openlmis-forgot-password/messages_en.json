@@ -8,6 +8,6 @@
   "openlmisForgotPassword.poweredBy": "Powered by ${openlmis}",
   "openlmisForgotPassword.resetPassword.label": "Reset Password",
   "openlmisForgotPassword.resetPassword.message": "Please provide your email address and we will send you a reset password link on your registered email.",
-  "openlmisForgotPassword.resetPasswordAlert.message": "An email with a password reset token has been sent to the email address you provided.",
-  "openlmisForgotPassword.resetPasswordAlert.title": "Email sent!"
+  "openlmisForgotPassword.resetPasswordAlert.message": "If an account with the provided email address is active, you will receive an email with instructions to reset your password.",
+  "openlmisForgotPassword.resetPasswordAlert.title": "Password Reset Requested"
 }
