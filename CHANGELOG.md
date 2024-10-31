@@ -1,3 +1,9 @@
+6.2.13 / wip
+==================
+Improvements:
+* [OIS-56](https://openlmis.atlassian.net/browse/OIS-56): Improved messages for password change
+* [OIS-24](https://openlmis.atlassian.net/browse/OIS-24): Adjusted styles to support RTL
+
 6.2.12 / 2024-04-19
 ==================
 Improvements:
