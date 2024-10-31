@@ -1,4 +1,4 @@
-6.2.13 / wip
+6.2.13 / 2024-10-31
 ==================
 Improvements:
 * [OIS-56](https://openlmis.atlassian.net/browse/OIS-56): Improved messages for password change
