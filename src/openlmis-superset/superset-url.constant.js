@@ -14,22 +14,17 @@
  */
 
 (function() {
-
     'use strict';
 
     /**
-     * @module openlmis-login
-     *
-     * @description
-     * Provides base openlmis-login state and controller/service to handle logging.
-     */
-    angular.module('openlmis-login', [
-        'openlmis-auth',
-        'openlmis-offline',
-        'openlmis-locale',
-        'openlmis-modal',
-        'ui.router',
-        'openlmis-superset'
-    ]);
+    * @ngdoc object
+    * @name superset.SUPERSET_URL
+    *
+    * @description
+    * This is constant defining superset URL.
+    */
+    angular
+        .module('openlmis-superset')
+        .constant('SUPERSET_URL', 'https://superset-uat.openlmis.org');
 
 })();

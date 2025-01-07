@@ -14,22 +14,17 @@
  */
 
 (function() {
-
     'use strict';
 
     /**
-     * @module openlmis-login
-     *
-     * @description
-     * Provides base openlmis-login state and controller/service to handle logging.
-     */
-    angular.module('openlmis-login', [
-        'openlmis-auth',
-        'openlmis-offline',
-        'openlmis-locale',
-        'openlmis-modal',
-        'ui.router',
-        'openlmis-superset'
-    ]);
+    * @ngdoc object
+    * @name openlmis-superset.MODAL_CANCELLED
+    *
+    * @description
+    * This is the constant describing the rejection of promise in case of cancellation of a modal.
+   */
+    angular
+        .module('openlmis-superset')
+        .constant('MODAL_CANCELLED', 'MODAL_CANCELLED');
 
 })();

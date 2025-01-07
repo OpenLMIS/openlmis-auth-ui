@@ -18,18 +18,17 @@
     'use strict';
 
     /**
-     * @module openlmis-login
+     * @module openlmis-superset
      *
      * @description
-     * Provides base openlmis-login state and controller/service to handle logging.
+     * Provides openlmis-superset login pages
      */
-    angular.module('openlmis-login', [
+    angular.module('openlmis-superset', [
+        'ngResource',
         'openlmis-auth',
-        'openlmis-offline',
-        'openlmis-locale',
-        'openlmis-modal',
-        'ui.router',
-        'openlmis-superset'
+        'openlmis-i18n',
+        'openlmis-urls',
+        'ui.router'
     ]);
 
 })();

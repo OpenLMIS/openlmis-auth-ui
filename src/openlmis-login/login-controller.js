@@ -28,10 +28,10 @@
         .controller('LoginController', LoginController);
 
     LoginController.$inject = [
-        'loginService', 'modalDeferred', 'loadingModalService', '$rootScope'
+        'loginService', 'modalDeferred', 'loadingModalService', '$rootScope', 'supersetOAuthService'
     ];
 
-    function LoginController(loginService, modalDeferred, loadingModalService, $rootScope) {
+    function LoginController(loginService, modalDeferred, loadingModalService, $rootScope, supersetOAuthService) {
 
         var vm = this;
 
@@ -53,12 +53,26 @@
                 .then(function() {
                     $rootScope.$emit('openlmis-auth.login');
                     modalDeferred.resolve();
+                    loginToSuperset();
                 })
                 .catch(function(error) {
                     vm.loginError = error;
                     vm.password = undefined;
                 })
                 .finally(loadingModalService.close);
+        }
+
+        function loginToSuperset() {
+            supersetOAuthService.checkAuthorizationInSuperset()
+                .then(function(data) {
+                    vm.supersetOAuthState = data.state;
+                    if (data.isAuthorized === false) {
+                        supersetOAuthService.authorizeInSuperset(vm.username, vm.password, vm.supersetOAuthState)
+                            .then(function() {
+                                $rootScope.$emit('openlmis-auth.authorized-in-superset');
+                            });
+                    }
+                });
         }
 
     }
