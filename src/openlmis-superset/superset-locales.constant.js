@@ -14,22 +14,20 @@
  */
 
 (function() {
-
     'use strict';
 
     /**
-     * @module openlmis-login
-     *
-     * @description
-     * Provides base openlmis-login state and controller/service to handle logging.
-     */
-    angular.module('openlmis-login', [
-        'openlmis-auth',
-        'openlmis-offline',
-        'openlmis-locale',
-        'openlmis-modal',
-        'ui.router',
-        'openlmis-superset'
-    ]);
+    * @ngdoc object
+    * @name superset.SUPERSET_LOCALES
+    *
+    * @description
+    * This is the constant defining a list of locales available in Superset.
+    */
+    angular
+        .module('openlmis-superset')
+        .constant('SUPERSET_LOCALES', locales());
 
+    function locales() {
+        return ['en', 'fr', 'pt'];
+    }
 })();

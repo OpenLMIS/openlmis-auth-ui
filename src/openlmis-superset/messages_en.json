@@ -1,0 +1,11 @@
+{
+    "superset.auth.pageRequiresAuthorization": "This page requires authorization in the reporting stack. If nothing shows up, you still can authorize manually by",
+    "superset.auth.clickingHere": "clicking here",
+    "superset.oAuthLogin.header": "Allow Superset to get access to OpenLMIS",
+    "superset.oAuthLogin.authorize": "Authorize",
+    "superset.oAuthLogin.cancel": "Cancel",
+    "superset.oAuthLogin.username": "Username",
+    "superset.oAuthLogin.password": "Password",
+    "superset.oAuthLogin.invalidCredentialsOrOAuthRequest": "Invalid credentials or unsuccessful OAuth request",
+    "superset.oAuthLogin.unsuccessfulApprovingPermissions": "Unsuccessful approving permissions for Superset"
+}
