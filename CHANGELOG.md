@@ -1,5 +1,7 @@
 6.2.14-SNAPSHOT / WIP
 ==================
+New functionality added in backwards-compatible manner:
+* [SELV3-784](https://openlmis.atlassian.net/browse/SELV3-784): Added login to superset to display report on home page.
 
 6.2.13 / 2024-10-31
 ==================

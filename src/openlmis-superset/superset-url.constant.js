@@ -25,6 +25,6 @@
     */
     angular
         .module('openlmis-superset')
-        .constant('SUPERSET_URL', 'https://superset-uat.openlmis.org');
+        .constant('SUPERSET_URL', '${SUPERSET_URL}');
 
 })();
