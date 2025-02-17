@@ -32,7 +32,7 @@
     config.$inject = ['$httpProvider'];
 
     factory.$inject = [
-        '$q', '$injector', 'openlmisUrlService', 'authorizationService', 'accessTokenFactory'
+        '$q', '$injector', 'openlmisUrlService', 'authorizationService', 'accessTokenFactory', 'localStorageService'
     ];
 
     function config($httpProvider) {
@@ -40,7 +40,7 @@
     }
 
     function factory($q, $injector, openlmisUrlService, authorizationService,
-                     accessTokenFactory) {
+                     accessTokenFactory, localStorageService) {
 
         var interceptor = {
             request: request,
@@ -84,11 +84,8 @@
                 return $q.reject(response);
             }
             if (response.status === 401) {
-                authorizationService.clearAccessToken();
-                authorizationService.clearUser();
-                authorizationService.clearRights();
+                localStorageService.clearTheUserDataStorage();
             } else if (response.status === 403) {
-
                 if (response.data && response.data.message) {
                     $injector.get('alertService')
                         .error('openlmisAuth.authorization.error', response.data.message);

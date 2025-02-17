@@ -28,19 +28,17 @@ describe('accessTokenInterceptor', function() {
             this.accessTokenInterceptor = $injector.get('accessTokenInterceptor');
             this.accessTokenFactory = $injector.get('accessTokenFactory');
             this.alertService = $injector.get('alertService');
+            this.localStorageService = $injector.get('localStorageService');
         });
 
         spyOn(this.accessTokenFactory, 'addAccessToken').andCallFake(function(url) {
             return url + '&access_token=SoMeAcCeSsToKeN';
         });
         spyOn(this.accessTokenFactory, 'authHeader').andReturn('Bearer SoMeAcCeSsToKeN');
-
         spyOn(this.openlmisUrlService, 'check');
         spyOn(this.authorizationService, 'isAuthenticated');
-        spyOn(this.authorizationService, 'clearAccessToken');
-        spyOn(this.authorizationService, 'clearUser');
-        spyOn(this.authorizationService, 'clearRights');
         spyOn(this.alertService, 'error');
+        spyOn(this.localStorageService, 'clearTheUserDataStorage');
     });
 
     describe('request', function() {
@@ -123,16 +121,8 @@ describe('accessTokenInterceptor', function() {
                 this.accessTokenInterceptor.responseError(response);
             });
 
-            it('should not clear access token', function() {
-                expect(this.authorizationService.clearAccessToken).not.toHaveBeenCalled();
-            });
-
-            it('should not clear user', function() {
-                expect(this.authorizationService.clearUser).not.toHaveBeenCalled();
-            });
-
-            it('should not clear rights', function() {
-                expect(this.authorizationService.clearRights).not.toHaveBeenCalled();
+            it('should not clear the user data storage', function() {
+                expect(this.localStorageService.clearTheUserDataStorage).not.toHaveBeenCalled();
             });
         });
 
@@ -155,16 +145,8 @@ describe('accessTokenInterceptor', function() {
                 this.accessTokenInterceptor.responseError(response);
             });
 
-            it('should clear access token', function() {
-                expect(this.authorizationService.clearAccessToken).toHaveBeenCalled();
-            });
-
-            it('should clear user', function() {
-                expect(this.authorizationService.clearUser).toHaveBeenCalled();
-            });
-
-            it('should clear rights', function() {
-                expect(this.authorizationService.clearRights).toHaveBeenCalled();
+            it('should clear the user data storage', function() {
+                expect(this.localStorageService.clearTheUserDataStorage).toHaveBeenCalled();
             });
 
         });

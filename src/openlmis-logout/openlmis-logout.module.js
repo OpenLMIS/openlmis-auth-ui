@@ -24,6 +24,7 @@
      * This module is responsible for logging out from OpenLMIS.
      */
     angular.module('openlmis-logout', [
-        'openlmis-login'
+        'openlmis-login',
+        'openlmis-local-storage'
     ]);
 })();
