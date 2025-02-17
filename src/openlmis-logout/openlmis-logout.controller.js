@@ -29,10 +29,10 @@
         .controller('LogoutController', LogoutController);
 
     LogoutController.$inject = [
-        '$state', 'loginService', 'offlineService', 'confirmService', '$rootScope'
+        '$state', 'loginService', 'offlineService', 'confirmService', '$rootScope', 'localStorageService'
     ];
 
-    function LogoutController($state, loginService, offlineService, confirmService, $rootScope) {
+    function LogoutController($state, loginService, offlineService, confirmService, $rootScope, localStorageService) {
         var vm = this;
 
         vm.logout = logout;
@@ -58,9 +58,7 @@
         function doLogout() {
             loginService.logout()
                 .then(function() {
-                    var currentLocale = localStorage.getItem('openlmis.current_locale');
-                    localStorage.clear();
-                    localStorage.setItem('openlmis.current_locale', currentLocale);
+                    localStorageService.clearTheUserDataStorage();
                 })
                 .then(function() {
                     $rootScope.$emit('openlmis-auth.logout');
