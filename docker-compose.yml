@@ -14,7 +14,7 @@ services:
     depends_on:
       - ui-components
   ui-components:
-    image: openlmis/ui-components:7.2.13-RC2
+    image: openlmis/ui-components:7.2.13
     volumes:
       - '/openlmis-ui-components'
   image:
