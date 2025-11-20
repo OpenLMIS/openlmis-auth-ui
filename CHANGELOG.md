@@ -1,4 +1,4 @@
-6.2.16-SNAPSHOT / WIP
+Upcoming Version (WIP)
 ==================
 
 6.2.15 / 2025-03-31
