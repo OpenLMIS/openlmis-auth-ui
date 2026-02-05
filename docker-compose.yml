@@ -14,7 +14,7 @@ services:
     depends_on:
       - ui-components
   ui-components:
-    image: openlmis/ui-components:7.2.15-SNAPSHOT
+    image: openlmis/ui-components:7.2.15
     volumes:
       - '/openlmis-ui-components'
   image:
