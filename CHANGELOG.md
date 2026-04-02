@@ -1,5 +1,7 @@
 Upcoming Version (WIP)
 ==================
+Improvements:
+* [OLMIS-8218](https://openlmis.atlassian.net/browse/OLMIS-8218): Show password icon on login page
 
 6.2.17 / 2026-02-05
 =================
