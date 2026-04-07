@@ -30,6 +30,7 @@
                             <i class="fa password-icon"
                                ng-class="{'fa-eye': !vm.showPassword, 'fa-eye-slash': vm.showPassword}"
                                ng-click="vm.togglePassword()"
+                               title="{{vm.showPassword ? 'openlmisLogin.hidePassword' : 'openlmisLogin.showPassword' | message}}"
                                aria-hidden="true">
                             </i>
                         </div>
