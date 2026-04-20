@@ -28,14 +28,17 @@
         .controller('LoginController', LoginController);
 
     LoginController.$inject = [
-        'loginService', 'modalDeferred', 'loadingModalService', '$rootScope', 'supersetOAuthService'
+        'loginService', 'modalDeferred', 'loadingModalService', '$rootScope',
+        'supersetOAuthService', '$timeout'
     ];
 
-    function LoginController(loginService, modalDeferred, loadingModalService, $rootScope, supersetOAuthService) {
+    function LoginController(loginService, modalDeferred, loadingModalService, $rootScope, supersetOAuthService,
+                             $timeout) {
 
         var vm = this;
 
         vm.doLogin = doLogin;
+        vm.togglePassword = togglePassword;
 
         /**
          * @ngdoc method
@@ -73,6 +76,16 @@
                             });
                     }
                 });
+        }
+
+        function togglePassword() {
+            vm.isToggling = true;
+            vm.showPassword = !vm.showPassword;
+
+            $timeout(function() {
+                vm.isToggling = false;
+                document.getElementById('login-password').focus();
+            }, 50);
         }
 
     }

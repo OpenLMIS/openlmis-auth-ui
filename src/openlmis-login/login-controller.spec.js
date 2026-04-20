@@ -29,6 +29,7 @@ describe('LoginController', function() {
             this.$q = $injector.get('$q');
             this.$rootScope = $injector.get('$rootScope');
             this.$controller = $injector.get('$controller');
+            this.$timeout = $injector.get('$timeout');
             this.loginService = $injector.get('loginService');
             this.loadingModalService = $injector.get('loadingModalService');
             this.supersetOAuthService = $injector.get('supersetOAuthService');
@@ -231,6 +232,62 @@ describe('LoginController', function() {
             expect(this.supersetOAuthService.checkAuthorizationInSuperset).not.toHaveBeenCalled();
             expect(this.supersetOAuthService.authorizeInSuperset).not.toHaveBeenCalled();
             expect(success).toBe(false);
+        });
+    });
+
+    describe('togglePassword', function() {
+
+        beforeEach(function() {
+            this.mockPasswordField = {
+                focus: function() {}
+            };
+            document.getElementById = function(id) {
+                if (id === 'login-password') {
+                    return this.mockPasswordField;
+                }
+                return null;
+            }.bind(this);
+        });
+
+        afterEach(function() {
+            delete document.getElementById;
+        });
+
+        it('should toggle showPassword from false to true', function() {
+            this.vm.showPassword = false;
+
+            this.vm.togglePassword();
+            this.$timeout.flush();
+
+            expect(this.vm.showPassword).toBe(true);
+        });
+
+        it('should toggle showPassword from true to false', function() {
+            this.vm.showPassword = true;
+
+            this.vm.togglePassword();
+            this.$timeout.flush();
+
+            expect(this.vm.showPassword).toBe(false);
+        });
+
+        it('should set isToggling to true during toggle', function() {
+            this.vm.isToggling = false;
+            this.vm.showPassword = false;
+
+            this.vm.togglePassword();
+
+            expect(this.vm.isToggling).toBe(true);
+        });
+
+        it('should focus on password field after toggle', function() {
+            this.vm.showPassword = false;
+            spyOn(this.mockPasswordField, 'focus');
+
+            this.vm.togglePassword();
+            this.$timeout.flush();
+
+            expect(this.mockPasswordField.focus).toHaveBeenCalled();
         });
     });
 });

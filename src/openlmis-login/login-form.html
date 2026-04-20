@@ -20,7 +20,20 @@
                     </div>
                     <div class="form-group">
                         <label for="login-password">{{'openlmisLogin.password' | message}}</label>
-                        <input ng-model="vm.password" type="password" id="login-password" required/>
+                        <div class="password-wrapper">
+                            <input ng-model="vm.password"
+                                   ng-attr-type="{{ vm.showPassword ? 'text' : 'password' }}"
+                                   ng-readonly="vm.isToggling"
+                                   id="login-password"
+                                   class="form-control password-input"
+                                   required/>
+                            <i class="fa password-icon"
+                               ng-class="{'fa-eye': !vm.showPassword, 'fa-eye-slash': vm.showPassword}"
+                               ng-click="vm.togglePassword()"
+                               title="{{vm.showPassword ? 'openlmisLogin.hidePassword' : 'openlmisLogin.showPassword' | message}}"
+                               aria-hidden="true">
+                            </i>
+                        </div>
                     </div>
                     <div class="button-group">
                         <input id="login-button" type="submit" value="{{'openlmisLogin.signIn' | message}}"/>
