@@ -89,6 +89,9 @@
                 if (response.data && response.data.message) {
                     $injector.get('alertService')
                         .error('openlmisAuth.authorization.error', response.data.message);
+                } else if (response.data && response.data.content && response.data.content.message) {
+                    $injector.get('alertService')
+                        .error('openlmisAuth.authorization.error', response.data.content.message);
                 } else {
                     $injector.get('alertService')
                         .error('openlmisAuth.authorization.error');
