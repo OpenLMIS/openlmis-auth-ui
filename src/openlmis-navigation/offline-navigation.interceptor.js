@@ -32,13 +32,25 @@
     ];
 
     function offlineNavigationInterceptor($rootScope, alertService, loadingModalService, offlineService, $state) {
+        var offlineAlertPending = false;
+
         $rootScope.$on('$stateChangeStart', checkOffline);
+        $rootScope.$on('openlmis.online', closeOfflineAlert);
 
         function checkOffline(event, toState, toStateParams, fromState, fromStateParams, options) {
             if (shouldPreventStateChange(toState, fromState, options)) {
                 event.preventDefault();
                 loadingModalService.close();
-                alertService.error('openlmisNavigation.notAvailableOffline');
+                offlineAlertPending = true;
+                alertService.error('openlmisNavigation.notAvailableOffline').finally(function() {
+                    offlineAlertPending = false;
+                });
+            }
+        }
+
+        function closeOfflineAlert() {
+            if (offlineAlertPending) {
+                alertService.close();
             }
         }
 
