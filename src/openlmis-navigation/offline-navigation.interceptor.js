@@ -41,10 +41,12 @@
             if (shouldPreventStateChange(toState, fromState, options)) {
                 event.preventDefault();
                 loadingModalService.close();
-                offlineAlertPending = true;
-                alertService.error('openlmisNavigation.notAvailableOffline').finally(function() {
-                    offlineAlertPending = false;
-                });
+                if (!offlineAlertPending) {
+                    offlineAlertPending = true;
+                    alertService.error('openlmisNavigation.notAvailableOffline').finally(function() {
+                        offlineAlertPending = false;
+                    });
+                }
             }
         }
 
