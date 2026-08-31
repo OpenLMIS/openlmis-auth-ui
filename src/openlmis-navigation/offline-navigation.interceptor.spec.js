@@ -60,11 +60,14 @@ describe('Offline navigation interceptor', function() {
             this.loadingModalService = $injector.get('loadingModalService');
             this.offlineService = $injector.get('offlineService');
             this.$rootScope = $injector.get('$rootScope');
+            this.$q = $injector.get('$q');
         });
 
         this.isOffline = false;
+        this.alertDeferred = this.$q.defer();
 
-        spyOn(this.alertService, 'error');
+        spyOn(this.alertService, 'error').andReturn(this.alertDeferred.promise);
+        this.alertService.close = jasmine.createSpy('close');
         spyOn(this.loadingModalService, 'close');
 
         var context = this;
@@ -152,6 +155,38 @@ describe('Offline navigation interceptor', function() {
         this.$state.go('parent.child.left');
 
         expect(this.alertService.error).toHaveBeenCalled();
+    });
+
+    it('will close the offline alert when going online', function() {
+        this.isOffline = true;
+        this.$state.go('normal');
+        this.$rootScope.$apply();
+
+        expect(this.alertService.error).toHaveBeenCalled();
+        expect(this.alertService.close).not.toHaveBeenCalled();
+
+        this.$rootScope.$broadcast('openlmis.online');
+
+        expect(this.alertService.close).toHaveBeenCalled();
+    });
+
+    it('will not close any alert on online event if no offline alert was opened', function() {
+        this.$rootScope.$broadcast('openlmis.online');
+
+        expect(this.alertService.close).not.toHaveBeenCalled();
+    });
+
+    it('will not close an already-dismissed offline alert on subsequent online event', function() {
+        this.isOffline = true;
+        this.$state.go('normal');
+        this.$rootScope.$apply();
+
+        this.alertDeferred.resolve();
+        this.$rootScope.$apply();
+
+        this.$rootScope.$broadcast('openlmis.online');
+
+        expect(this.alertService.close).not.toHaveBeenCalled();
     });
 
 });
